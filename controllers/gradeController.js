@@ -41,7 +41,7 @@ const findAll = async (req, res) => {
   try {
     logger.info(`GET /grade`);
     const grades = await gradeSchema.find();
-
+    
     return res.send(grades);
   } catch (error) {
     logger.error(`GET /grade - ${JSON.stringify(error.message)}`);
@@ -107,8 +107,8 @@ const remove = async (req, res) => {
   const id = req.params.id;
 
   try {
-    await gradeSchema.findByIdAndDelete(id);
-
+    const a = await gradeSchema.findByIdAndDelete(id);
+    console.log(a);
     res.send({ message: 'Grade excluido com sucesso' });
 
     logger.info(`DELETE /grade - ${id}`);
@@ -124,6 +124,8 @@ const removeAll = async (req, res) => {
   const id = req.params.id;
 
   try {
+    await gradeSchema.deleteMany();
+
     res.send({
       message: `Grades excluidos`,
     });
@@ -133,9 +135,5 @@ const removeAll = async (req, res) => {
     logger.error(`DELETE /grade - ${JSON.stringify(error.message)}`);
   }
 };
-
-// const fera = (req, res) => {
-//   return res.send('aaaaaaaa');
-// }
 
 export default { create, findAll, findOne, update, remove, removeAll };

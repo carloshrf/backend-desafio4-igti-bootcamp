@@ -31,18 +31,24 @@ const create = async (req, res) => {
 };
 
 const findAll = async (req, res) => {
-  const name = req.query;
+  const { name } = req.query;
 
   //condicao para o filtro no findAll
-  var condition = name
-    ? { name: { $regex: new RegExp(name), $options: 'i' } }
-    : {};
+  // var condition = name
+  //   ? { name: { $regex: new RegExp(name), $options: 'i' } }
+  //   : {};
   
   try {
     logger.info(`GET /grade`);
-    const grades = await gradeSchema.find();
     
-    return res.send(grades);
+    if (name) {
+      const grades = await gradeSchema.find({name: name});
+      return res.send(grades);
+    } else {
+      const grades = await gradeSchema.find();
+      return res.send(grades);
+    }
+    
   } catch (error) {
     logger.error(`GET /grade - ${JSON.stringify(error.message)}`);
 
